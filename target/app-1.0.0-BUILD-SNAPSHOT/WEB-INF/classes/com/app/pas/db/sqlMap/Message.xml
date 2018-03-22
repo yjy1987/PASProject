@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Message">
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+
+	<!-- 받은 쪽지함 -->
+	<select id="selectReceiveMessageList" resultClass="Message" parameterClass="Message">
+		SELECT * FROM Message 
+		where msg_rm_Email = #msg_rm_Email#	order by msg_Article_Num desc 
+	</select>
+	
+	<!-- 보낸 쪽지함 -->
+	<select id="selectSendMessageList" resultClass="Message" parameterClass="Message">
+		SELECT * FROM Message 
+		where msg_sm_Email = #msg_sm_Email#	order by msg_Article_Num desc 
+	
+	</select>
+
+	<!-- <select id="selectReceiveMessageList" resultClass="ReceiveMessage" 
+		parameterClass="ReceiveMessage"> SELECT * FROM Message WHERE MSG_TITLE LIKE 
+		'%'||#msg_Title#||'%' and MSG_CONTENT LIKE '%'||#msg_Content#||'%' and MSG_SM_EMAIL 
+		LIKE '%'||#msg_sm_Email#||'%' and MSG_RM_EMAIL LIKE '%'||#msg_rm_Email#||'%' 
+		and MSG_ARTICLE_NUM = #msg_Article_Num# ORDER BY MSG_ARTICLE_NUM DESC </select> -->
+
+
+
+	<!-- 발신함 디테일 = 수신함 디테일 -->
+	<select id="selectMessage" resultClass="Message" parameterClass="int">
+		SELECT * FROM Message
+		WHERE
+		MSG_ARTICLE_NUM =
+		#msg_Article_Num#
+	</select>
+
+
+	<insert id="insertMessage" parameterClass="Message">
+		INSERT INTO
+		MESSAGE(MSG_ARTICLE_NUM,MSG_TITLE,MSG_CONTENT,MSG_SM_EMAIL,MSG_RM_EMAIL,MSG_SM_NAME,MSG_RM_NAME)
+		VALUES(MESSAGE_SEQ.NEXTVAL,#msg_Title#,#msg_Content#,#msg_sm_Email#,#msg_rm_Email#,#msg_sm_Name#,#msg_rm_Name#)
+	</insert>
+
+
+	<update id="updateReceiveMessageReadYN" parameterClass="int">
+		UPDATE
+		MESSAGE SET MSG_RM_READ_YN='y'
+		WHERE
+		MSG_ARTICLE_NUM =
+		#msg_Article_Num#
+	</update>
+
+	<update id="updateSendMessageDelYN" parameterClass="int">
+		UPDATE
+		MESSAGE SET MSG_SM_DEL_YN='y'
+		WHERE
+		MSG_ARTICLE_NUM =
+		#msg_Article_Num#
+	</update>
+
+	<update id="updateReceiveMessageDelYN" parameterClass="int">
+		UPDATE
+		MESSAGE SET MSG_RM_DEL_YN='y'
+		WHERE
+		MSG_ARTICLE_NUM =
+		#msg_Article_Num#
+	</update>
+	
+	<update id="updateReceiveMessageReadTime" parameterClass="int">
+		update
+		message set msg_rd_date = to_char(sysdate, 'yyyy/mm/dd HH24:MI:SS') 
+		where MSG_ARTICLE_NUM = #msg_Article_Num#
+	</update>
+	<delete id="deleteMessage" parameterClass="int">
+		DELETE FROM MESSAGE
+		WHERE
+		MSG_ARTICLE_NUM LIKE
+		'%'||#msg_Article_Num#||'%'
+	</delete>
+
+	
+</sqlMap>

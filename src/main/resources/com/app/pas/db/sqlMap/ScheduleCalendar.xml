@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="WeeklyCheck">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+
+	<select id="selectScheduleCalendarList" parameterClass="int"
+		resultClass="ScheduleCalendar">
+		select * from Schedule_Calendar where sc_proj_num= #sc_Proj_Num#
+	</select>
+
+	<update id="insertScheduleCalendar" parameterClass="ScheduleCalendar">
+		insert into
+		Schedule_Calendar(SC_NUM,SC_START_DATE,SC_END_DATE,SC_TITLE,SC_COLOR,SC_WK_NAME,SC_WK_MEM_EMAIL,SC_PROJ_NUM,SC_DESCRIPTION)
+		VALUES(SCHEDULE_CALENDAR_SEQ.nextval,#sc_Start_Date#,#sc_End_Date#,#sc_Title#,#sc_Color#,#sc_Wk_Name#,#sc_Wk_Mem_Email#,#sc_Proj_Num#,#sc_Description#)
+	</update>
+
+	<update id="deleteScheduleCalendar" parameterClass="int">
+		delete from Schedule_Calendar where SC_NUM=#sc_Num#
+	</update>
+
+	<update id="updateScheduleCalendar" parameterClass="ScheduleCalendar">
+		update Schedule_Calendar
+		set sc_start_date = #sc_Start_Date#, sc_end_date = #sc_End_Date#,
+		sc_title = #sc_Title#,sc_description = #sc_Description#
+		where sc_Num=#sc_Num# and sc_proj_num = #sc_Proj_Num#
+	</update>
+
+	<update id="updateScheduleCalendarColor" parameterClass="ScheduleCalendar">
+		update Schedule_Calendar
+		set sc_color = #sc_Color#
+		where sc_proj_num = #sc_Proj_Num# and sc_wk_mem_email = #sc_Wk_Mem_Email#
+	</update>
+
+	<select id="selectScheduleCalendarByScNum" parameterClass="int"
+		resultClass="ScheduleCalendar">
+		select * from Schedule_Calendar where sc_Num = #sc_Num#
+	</select>
+
+	<select id="selectWeeklylist_Start" parameterClass="ScheduleCalendar"
+		resultClass="ScheduleCalendar">
+	select * from WEEKLY_CHCKLIST_START
+	where sc_wk_mem_email = #sc_Wk_Mem_Email# and sc_proj_num = #sc_Proj_Num#
+	</select>
+	
+	<select id="selectWeeklylist_End" parameterClass="ScheduleCalendar"
+		resultClass="ScheduleCalendar">
+	select * from WEEKLY_CHCKLIST_END
+	where sc_wk_mem_email = #sc_Wk_Mem_Email# and sc_proj_num = #sc_Proj_Num#
+	</select>
+	
+	<select id="weekly_date" resultClass="ScheduleCalendar">
+	select * from weekly_checklist
+	</select>
+	
+	<select id="selectScheduleCount" parameterClass="int" resultClass="int">
+	select count(*) from schedule_calendar where sc_proj_num = #proj_Num#
+	</select>
+
+</sqlMap>

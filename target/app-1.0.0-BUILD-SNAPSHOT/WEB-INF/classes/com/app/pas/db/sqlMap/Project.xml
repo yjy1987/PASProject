@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Project">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+
+
+   <select id="selectProjectList" parameterClass="int" resultClass="Project">
+      select * from PROJECT where PROJ_NUM LIKE '%'||#proj_Num#||'%'
+   </select>
+   <select id="selectProjectList2" parameterClass="str" resultClass="Project">
+      select * from PROJECT where proj_Name LIKE '%'||#proj_Name#||'%'
+   </select>
+   <select id="selectProject" parameterClass="int" resultClass="Project">
+      select * from project where proj_num = #proj_Num#
+   </select>
+
+   <select id="selectMyProjectListById" parameterClass="Project" resultClass="Project">
+      select A.MEM_EMAIL AS MEM_EMAIL, A.PROJ_CONTENT AS PROJ_CONTENT, A.PROJ_NAME
+      AS PROJ_NAME,A.PROJ_TEAM AS PROJ_TEAM,A.PROJ_NUM AS PROJ_NUM,
+      A.PROJ_CHECK AS PROJ_CHECK
+      from project A, (select distinct proj_num from mem_position_view where
+      mem_email = #mem_Email# and pjj_per_num=1)m
+      where A.PROJ_NUM = M.PROJ_NUM
+      and a.proj_check='y'
+      and PROJ_NAME like '%'||#proj_Search#||'%'
+   </select>
+   
+   <select id="selectMemberToProjNum" parameterClass="int" resultClass="ProjectJoin">
+   select * from project_join where proj_num = #proj_Num#
+   </select>
+
+   <select id="selectOtherProjectListById" parameterClass="Project" resultClass="Project">
+      select A.MEM_EMAIL AS MEM_EMAIL, A.PROJ_CONTENT AS PROJ_CONTENT, A.PROJ_NAME
+      AS PROJ_NAME,A.PROJ_TEAM AS PROJ_TEAM, A.PROJ_NUM AS PROJ_NUM,
+      A.PROJ_CHECK AS PROJ_CHECK
+      from project A
+      where proj_num not in ( select distinct proj_num from mem_position_view
+      where mem_email =#mem_Email# and pjj_per_Num ='1')
+      and PROJ_NAME like '%'||#proj_Search#||'%'
+   </select>
+
+   <update id="insertProject" parameterClass="Project">
+      insert into
+      PROJECT(PROJ_NUM,MEM_EMAIL,PROJ_CONTENT,PROJ_NAME,MEM_NAME,mem_Img,PROJ_TEAM)
+      VALUES(PROJECT_SEQ.NEXTVAL,#mem_Email#,#proj_Content#,#proj_Name#,#mem_Name#,#mem_Img#,#proj_Team#)
+   </update>
+
+   <update id="updateProject" parameterClass="Project">
+      UPDATE PROJECT SET MEM_EMAIL=#mem_Email#,
+      PROJ_CONTENT=#proj_Content#,PROJ_CHECK=#proj_Check#,PROJ_TEAM=#proj_Team#,
+      PROJ_NAME=#proj_Name# WHERE PROJ_NUM =#proj_Num#
+   </update>
+
+   <update id="deleteProject" parameterClass="int">
+      delete from PROJECT where PROJ_NUM=#proj_Num#
+   </update>
+
+	<select id="selectMemPositionViewListByProjNum" parameterClass="int"
+		resultClass="MemPositionView">
+		select * from mem_position_view where pjj_per_num = 1 and proj_num =
+		#proj_Num# order by POSITION_NUM asc
+	</select>
+
+   <select id="selectLastInsertProject" parameterClass="str"
+      resultClass="Project">
+      SELECT * FROM (SELECT * FROM project WHERE mem_email=#mem_Email# ORDER BY
+      proj_Num DESC) WHERE ROWNUM = 1
+   </select>
+
+   <update id="updateProjectImg" parameterClass="Project">
+      update Project set proj_Img=#proj_Img# where proj_Num = #proj_Num#
+   </update>
+
+   <select id="selectOtherProjectCount" parameterClass="str"
+      resultClass="int">
+
+      select count(*)
+      from project A
+      where proj_num not in ( select distinct proj_num from mem_position_view
+      where mem_email =#mem_Email# and pjj_per_Num ='1')
+
+   </select>
+
+   <update id="updateProjectColor" parameterClass="Project">
+      update Project set proj_Color=#proj_Color# where proj_Num = #proj_Num#
+   </update>
+   
+   <select id="selectProjectTotalCount" resultClass="int">
+   	 select count(*) from Project
+   </select>
+   
+   	<select id="selectProjCreateToday" resultClass="Project">
+	SELECT * FROM PROJECT
+	WHERE (PROJ_CREATED_DAY BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE,'D') + 8)
+	</select>
+   
+   
+   
+</sqlMap>

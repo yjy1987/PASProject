@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="euc-kr" ?>
+
+<decorators defaultdir="/">
+	<decorator name="my" page="my_decorator.jsp">
+		<pattern>/main/*</pattern>
+		<pattern>/qna/*</pattern>
+		<pattern>/freeBoard/*</pattern>
+		<pattern>/schedule/*</pattern>
+		<pattern>/SkillSharing/*</pattern>
+		<pattern>/product/*</pattern>
+		<pattern>/notice/*</pattern>
+		<pattern>/project/*</pattern>
+		<pattern>/work/*</pattern>
+	
+	</decorator>
+	
+	<decorator name="admin" page="admin_decorator.jsp">
+		<pattern>/admin/*</pattern>
+	
+	</decorator>
+
+
+
+	<excludes>
+		<pattern>*/pmOverView</pattern>
+		<pattern>*/adminLogin</pattern>
+		<pattern>*/tempNotice*</pattern>
+	    <pattern>*/pmChat*</pattern>
+	    <pattern>*/memberAuth*</pattern>
+	    <pattern>*/myPage*</pattern>
+		<pattern>*/index.jsp</pattern>
+		<pattern>*/index*</pattern>
+		<pattern>*/joinForm*</pattern>
+		<pattern>*/loginForm*</pattern>
+		<pattern>*/aaa*</pattern>
+		<pattern>*/join*</pattern>
+	</excludes>
+
+</decorators>

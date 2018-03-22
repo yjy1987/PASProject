@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="WeeklyCheck">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+
+	<select id="weeklyCheck_Select" resultClass="WeeklyCheck" parameterClass="WeeklyCheck">
+		SELECT * FROM WEEKLY_CHECK where wk_proj_Num = #wk_Proj_Num# and wk_mem_email = #wk_Mem_Email# order by wk_num asc
+	</select>
+	
+	<update id="weeklyCheck_Update" parameterClass="WeeklyCheck">
+		INSERT INTO
+		WEEKLY_CHECK(WK_NUM,WK_DATE,WK_CONTENT,WK_MEM_EMAIL,wk_proj_num)
+		VALUES(WEEKLY_CHECK_SEQ.NEXTVAL,#wk_Date#,#wk_Content#,#wk_Mem_Email#,#wk_Proj_Num#)
+	</update>
+	
+	<delete id="weeklyCheck_Delete" parameterClass="WeeklyCheck">
+		 DELETE FROM WEEKLY_CHECK
+		WHERE WK_NUM=#wk_Num#
+	</delete>
+	
+	<update id="weeklyCheck_YN" parameterClass="WeeklyCheck">
+		UPDATE WEEKLY_CHECK SET
+		WK_YN='Y'
+		WHERE
+		WK_NUM = #wk_Num#
+	</update>
+	<update id="wk_UpdateSuccess" parameterClass="WeeklyCheck">
+		update weekly_check set wk_content = #wk_Content# where wk_Num = #wk_Num#
+	</update>
+	
+	<select id="selectWkYnY" resultClass="int" parameterClass="int">
+		select count(*) from weekly_check where wk_proj_num=#proj_Num# and wk_yn='Y'
+	</select>
+	
+	<select id="selectWkYnN" resultClass="int" parameterClass="int">
+		select count(*) from weekly_check where wk_proj_num=#proj_Num# and wk_yn='N'
+	</select>
+
+</sqlMap>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Main">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+
+	<select id="myPostBoard_Qna" resultClass="QnaBoard" parameterClass="QnaBoard">
+		SELECT * FROM QNA_BOARD
+		WHERE 
+		QB_ARTICLE_NUM = #qb_Article_Num#
+	</select>
+	
+	<select id="myPostBoard_Skill" resultClass="SkillSharingBoard" parameterClass="SkillSharingBoard">
+		SELECT * FROM SKILL_SHARING_BOARD
+		WHERE
+		SSB_ARTICLE_NUM = #ssb_Article_Num#
+	</select>
+
+	<select id="myPostBoard_frb" resultClass="FreeBoard" parameterClass="FreeBoard">
+		SELECT * FROM FREE_BOARD
+		WHERE
+		FRB_ARTICLE_NUM like '%'||#frb_Article_Num#||'%'
+	</select>
+	
+	<select id="MyPostBoard" resultClass="MyPostBoardVo" parameterClass="MyPostBoardVo">
+		SELECT * FROM VW_MYPOST
+		WHERE MAIL like '%'||#mail#||'%'
+		ORDER BY DT DESC
+	</select>
+	
+	<update id="myPostUpdate_frb" parameterClass="FreeBoard">
+	  UPDATE FREE_BOARD SET FRB_CONTENT=#frb_Content#,
+      FRB_TITLE=#frb_Title# WHERE FRB_ARTICLE_NUM=#frb_Article_Num#
+	</update>
+	
+</sqlMap>
+
+

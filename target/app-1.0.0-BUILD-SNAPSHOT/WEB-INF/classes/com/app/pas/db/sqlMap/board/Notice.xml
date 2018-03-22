@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Notice">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+	<typeAlias alias="mapp" type="java.util.HashMap" />
+	
+	<!-- <select id="selectNoticeList" resultClass="Notice"> SELECT * FROM NOTICE 
+		ORDER BY NOTICE_NUM DESC </select> -->
+
+    <select id="selectNoticePosition" parameterClass="mapp" resultClass="MemPositionView">
+       SELECT * 
+       FROM MEM_POSITION_VIEW 
+       WHERE PROJ_NUM = #proj_Num# AND MEM_EMAIL=#mem_Email#
+    </select>
+    
+
+	<select id="selectNotice" parameterClass="int" resultClass="Notice">
+		SELECT *
+		FROM NOTICE
+		WHERE PROJ_NUM LIKE '%'||#proj_Num#||'%' order by notice_Num desc
+	</select>
+
+	<select id="selectNoticeDetail" parameterClass="mapp"
+		resultClass="Notice">
+		SELECT *
+		FROM NOTICE
+		WHERE NOTICE_NUM = #notice_Num# AND PROJ_NUM = #proj_Num#
+	</select>
+
+	<select id="selectNoticeCount" parameterClass="int" resultClass="int">
+		SELECT COUNT(*) FROM NOTICE WHERE PROJ_NUM=#proj_Num#
+	</select>
+
+
+
+	<insert id="insertNotice" parameterClass="Notice">
+		INSERT INTO
+		NOTICE(NOTICE_NUM,NOTICE_TITLE,NOTICE_CONTENT,PROJ_NUM,MEM_NAME)
+		VALUES(NOTICE_SEQ.NEXTVAL,#notice_Title#,#notice_Content#,#proj_Num#,#mem_Name#)
+
+	</insert>
+
+
+	<update id="updateNotice" parameterClass="Notice">
+		UPDATE NOTICE SET
+		NOTICE_TITLE=#notice_Title#, NOTICE_CONTENT=#notice_Content#
+		WHERE NOTICE_NUM=#notice_Num# AND PROJ_NUM=#proj_Num#
+	</update>
+
+	<delete id="deleteNotice" parameterClass="Notice">
+		DELETE FROM NOTICE
+		WHERE NOTICE_NUM=#notice_Num# AND PROJ_NUM=#proj_Num#
+
+
+	</delete>
+
+</sqlMap>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="DeadLine">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+   
+   <select id="selectDeadLine" parameterClass="int" resultClass="Admin" >
+      select * from deadline where GT_NUM=#gt_Num#
+   </select>
+   
+   <update id="insertDeadLine" parameterClass="DeadLine">
+      insert into deadline(GT_NUM,DD_CAHRGE_MEM,DD_CONTENT) 
+      values(GANTT_CHART_SEQ.NEXTVAL,#dd_Charge_Mem#,#dd_Content#)
+   </update>
+   
+   <update id="updateDeadLine" parameterClass="DeadLine">
+      update deadline set DD_CONTENT=#dd_Content#
+      WHERE GT_NUM = #gt_Num#
+   </update>
+   
+   <update id="deleteDeadLine" parameterClass="int">
+      delete from deadline where GT_NUM=#gt_Num#
+   </update>
+   
+</sqlMap>

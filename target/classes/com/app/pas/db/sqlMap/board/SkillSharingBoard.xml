@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SkillSharingBoard">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+	<select id="selectSkillLikeCountViewList" resultClass="SkillSharingBoard">
+		select * from Skill_Like_Count_View
+		WHERE SSB_TITLE LIKE '%'||#ssb_title#||'%'
+	</select>
+	
+	<select id="skill_myPostList" resultClass="SkillSharingBoard" parameterClass="SkillSharingBoard">
+	SELECT * FROM Skill_Like_Count_View
+		WHERE MEM_NAME LIKE '%'||#mem_Name#||'%' and
+		SSB_TITLE LIKE '%'||#ssb_Title#||'%' and
+		SSB_CONTENT LIKE '%'||#ssb_Content#||'%' and
+		SSB_TAG LIKE '%'||#ssb_Tag#||'%' 
+		<isGreaterThan prepend="and" property="ssb_Article_Num" compareValue="0">
+		SSB_ARTICLE_NUM = #ssb_Article_Num#
+		</isGreaterThan>
+		and SSB_CONTENT || SSB_TITLE LIKE '%'||#ssb_Title_Content#||'%'
+		and MEM_EMAIL like '%'||#mem_Email#||'%'	
+		ORDER BY SSB_ARTICLE_NUM DESC
+	</select>
+	
+	<select id="skill_myPostCount" resultClass="int" parameterClass="SkillSharingBoard">
+		SELECT COUNT(*) FROM Skill_Like_Count_View
+		WHERE MEM_NAME LIKE '%'||#mem_Name#||'%' and
+		SSB_TITLE LIKE '%'||#ssb_Title#||'%' and
+		SSB_CONTENT LIKE '%'||#ssb_Content#||'%'
+		<isGreaterThan prepend="and" property="ssb_Article_Num" compareValue="0">
+		SSB_ARTICLE_NUM = #ssb_Article_Num#
+		</isGreaterThan>
+		and SSB_CONTENT || SSB_TITLE LIKE '%'||#ssb_Title_Content#||'%'
+		and MEM_EMAIL like '%'||#mem_Email#||'%'	
+		ORDER BY SSB_ARTICLE_NUM DESC
+	
+	</select>
+
+	
+	<select id="selectSkillSharingBoardList" resultClass="SkillSharingBoard" parameterClass="SkillSharingBoard">
+		SELECT * FROM Skill_Like_Count_View
+		WHERE MEM_NAME LIKE '%'||#mem_Name#||'%' and
+		SSB_TITLE LIKE '%'||#ssb_Title#||'%' and
+		SSB_CONTENT LIKE '%'||#ssb_Content#||'%' and
+		SSB_TAG LIKE '%'||#ssb_Tag#||'%' 
+		<isGreaterThan prepend="and" property="ssb_Article_Num" compareValue="0">
+		SSB_ARTICLE_NUM = #ssb_Article_Num#
+		</isGreaterThan>
+		and SSB_CONTENT || SSB_TITLE LIKE '%'||#ssb_Title_Content#||'%'
+
+		ORDER BY SSB_ARTICLE_NUM DESC
+		
+	</select>
+	
+	<select id="skillSharingSearchCount" resultClass="int" parameterClass="SkillSharingBoard">
+		SELECT COUNT(*)
+		FROM SKILL_SHARING_BOARD
+		WHERE MEM_NAME LIKE '%'||#mem_Name#||'%' and
+		SSB_TITLE LIKE '%'||#ssb_Title#||'%' and
+		SSB_CONTENT LIKE '%'||#ssb_Content#||'%'
+		<isGreaterThan prepend="and" property="ssb_Article_Num" compareValue="0">
+		SSB_ARTICLE_NUM = #ssb_Article_Num#
+		</isGreaterThan>
+		 and  SSB_CONTENT || SSB_TITLE LIKE '%'||#ssb_Title_Content#||'%'
+	</select>
+	
+	<insert id="insertSkillSharingBoardLike" parameterClass="SkillSharingBoardLike">
+		INSERT INTO
+		SKILL_SHARING_BOARD_LIKE(SSB_ARTICLE_NUM,MEM_EMAIL) 
+		VALUES(#ssb_Article_Num#,#mem_Email#)
+	</insert>
+	
+	<delete id="deleteSkillSharingBoardLike" parameterClass="SkillSharingBoardLike">
+		DELETE FROM SKILL_SHARING_BOARD_LIKE WHERE SSB_ARTICLE_NUM=#ssb_Article_Num# and MEM_EMAIL=#mem_Email#
+	</delete>
+	
+	<select id="selectCountSharingBoardLike" resultClass="int">
+		select count(*) from SKILL_SHARING_BOARD_Like WHERE SSB_ARTICLE_NUM=#ssb_Article_Num#
+	</select>
+	
+	<select id="selectSkillSharingBoardLikeList" parameterClass="SkillSharingBoardLike"
+			resultClass="SkillSharingBoardLike">
+		SELECT *
+		FROM SKILL_SHARING_BOARD_LIKE
+		WHERE SSB_ARTICLE_NUM = #ssb_Article_Num# and MEM_EMAIL = #mem_Email#
+
+	</select>
+	
+
+	<select id="selectSkillSharingBoard" parameterClass="int"
+		resultClass="SkillSharingBoard">
+		SELECT *
+		FROM SKILL_LIKE_COUNT_VIEW
+		WHERE SSB_ARTICLE_NUM = #ssb_Article_Num#
+
+
+	</select>
+	
+	<select id="selectSkillSharingBoardTitle" parameterClass="str"
+		resultClass="SkillSharingBoard">
+		SELECT *
+		FROM SKILL_SHARING_BOARD
+		WHERE SSB_TITLE LIKE '%'||#ssb_title#||'%'
+
+
+	</select>
+
+	<insert id="insertSkillSharingBoard" parameterClass="SkillSharingBoard">
+		INSERT INTO
+		SKILL_SHARING_BOARD(SSB_ARTICLE_NUM,SSB_CONTENT,SSB_TITLE,MEM_EMAIL,MEM_NAME,SSB_TAG) 
+		VALUES(SKILL_SHARING_BOARD_SEQ.NEXTVAL,#ssb_Content#,#ssb_Title#,#mem_Email#,#mem_Name#,#ssb_Tag#)
+	</insert>
+
+
+	<update id="updateSkillSharingBoard" parameterClass="SkillSharingBoard">
+		UPDATE SKILL_SHARING_BOARD SET SSB_CONTENT=#ssb_Content#, SSB_TITLE=#ssb_Title#, SSB_TAG=#ssb_Tag#, ssb_Inq_Count=ssb_Inq_Count+1
+		WHERE SSB_ARTICLE_NUM = #ssb_Article_Num#
+	</update>
+	
+	<update id="updateSkillSharingBoardCount" parameterClass="SkillSharingBoard">
+		UPDATE SKILL_SHARING_BOARD SET ssb_Inq_Count=ssb_Inq_Count+1
+		WHERE SSB_ARTICLE_NUM = #ssb_Article_Num#
+	</update>
+	
+	<update id="updateSkillSharingBoardCountM" parameterClass="SkillSharingBoard">
+		UPDATE SKILL_SHARING_BOARD SET ssb_Inq_Count=ssb_Inq_Count-1
+		WHERE SSB_ARTICLE_NUM = #ssb_Article_Num#
+	</update>
+	
+	<delete id="deleteSkillSharingBoard" parameterClass="int">
+		DELETE FROM SKILL_SHARING_BOARD WHERE SSB_ARTICLE_NUM=#ssb_Article_Num#
+	</delete>
+	
+	<select id="selectTotalCountSharingBoard" resultClass="int">
+		select count(*) from SKILL_SHARING_BOARD
+	</select>
+	
+	
+	
+	
+</sqlMap>

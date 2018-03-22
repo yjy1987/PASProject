@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Member">
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+
+
+	<select id="selectMemberList" parameterClass="str" resultClass="Member">
+		select * from MEMBER where MEM_EMAIL LIKE '%'||#mem_Email#||'%'
+	</select>
+
+	<select id="selectMember" parameterClass="str" resultClass="Member">
+		select * from member where mem_email = #mem_Email#
+	</select>
+
+	<select id="searchEmail" parameterClass="Member" resultClass="Member">
+		select * from member where mem_Name =#mem_Name# and mem_Phone =
+		#mem_Phone#
+	</select>
+
+
+	<update id="extraMemberPwd" parameterClass="Member">
+		update Member set
+		mem_pass=#mem_Pass# where mem_email=#mem_Email#
+
+	</update>
+
+	<update id="updateMemberQuitCheck" parameterClass="Member">
+		update Member
+		set quit_Check=#quit_Check# where mem_email=#mem_Email#
+
+	</update>
+
+	<update id="AuthMember" parameterClass="str">
+
+		update Member set
+		mem_approve='y' where mem_email = # mem_Email#
+	</update>
+	<update id="insertMember" parameterClass="Member">
+		insert into
+		MEMBER(MEM_EMAIL,MEM_NAME,MEM_PHONE,MEM_PASS)
+		VALUES(#mem_Email#,#mem_Name#,#mem_Phone#,#mem_Pass#)
+	</update>
+
+	<update id="updateMember" parameterClass="Member">
+		UPDATE MEMBER SET
+		MEM_NAME=#mem_Name# ,MEM_PHONE=#mem_Phone#,
+		MEM_PASS=#mem_Pass#,MEM_IMG=#mem_Img#
+		WHERE MEM_EMAIL = #mem_Email#
+	</update>
+
+	<update id="deleteMember" parameterClass="str">
+		delete from MEMBER
+		where MEM_EMAIL=#mem_Email#
+	</update>
+
+	<select id="selectCountMemApplyView" parameterClass="MemApplyView"
+		resultClass="int">
+		select count(*) from mem_apply_view where
+		apply_commit_check =0 and mem_Email = #mem_Email# and proj_num =
+		#proj_Num#
+	</select>
+
+	<select id="selectMemApplyViewByMemProj" parameterClass="MemApplyView"
+		resultClass="MemApplyView">
+		select * from mem_apply_view where mem_email = #mem_Email#
+		and proj_num = #proj_Num#
+	</select>
+
+	<select id="selectMemApplyViewByEmail" parameterClass="str"
+		resultClass="MemApplyView">
+		select * from mem_Apply_View where p_mem_Email =
+		#p_Mem_Email# and apply_commit_check = '0' order by apply_num desc
+	</select>
+
+	<select id="selectCountMemApplyViewByEmail" parameterClass="str"
+		resultClass="int">
+		select count(*) from mem_Apply_View where p_mem_Email = #mem_Email# and
+		apply_commit_check = '0'
+	</select>
+
+	<select id="selectMemApplyViewByApplyNum" parameterClass="int"
+		resultClass="MemApplyView">
+		select * from mem_Apply_view where apply_Num = #apply_Num#
+	</select>
+
+	<update id="updateApplyCommitCheck" parameterClass="int">
+		update
+		mem_apply_view set apply_commit_check='1' where apply_Num =
+		#apply_Num#
+	</update>
+
+	<update id="deleteApplyViewByApplyNum" parameterClass="int">
+		delete
+		mem_apply_view where apply_Num = #apply_Num#
+	</update>
+
+
+	<update id="updateMemberImg" parameterClass="Member">
+		UPDATE MEMBER SET
+		MEM_IMG=#mem_Img# WHERE MEM_EMAIL = #mem_Email#
+	</update>
+
+	<select id="selectMemberListByProj" parameterClass="MemPositionView"
+		resultClass="MemPositionView">
+		select *
+		from Mem_Position_View
+		where proj_num = #proj_Num# and pjj_per_num = #pjj_Per_Num# order by
+		position_Num asc
+	</select>
+
+	<select id="selectMemberPositionByEmail" parameterClass="MemPositionView"
+		resultClass="MemPositionView">
+		select *
+		from Mem_Position_View
+		where mem_Email=#mem_Email# and proj_Num=#proj_Num# and pjj_per_num = 1
+	</select>
+
+
+	<select id="selectMemberPosition" parameterClass="MemPositionView"
+		resultClass="MemPositionView">
+		select *
+		from Mem_Position_View
+		where mem_Email=#mem_Email# and proj_Num=#proj_Num#
+
+	</select>
+
+	<select id="selectTotalCountMember" resultClass="int">
+		select count(*)
+		from member
+	</select>
+
+	<select id="selectMemberEmailList" parameterClass="int"
+		resultClass="MemberCommand">
+		select * from member where mem_email not in (select
+		mem_email from project_Join where proj_num = #proj_Num#)
+	</select>
+
+	<select id="selectMemberPhone" parameterClass="str" resultClass="str">
+		select mem_Phone
+		from member
+		where mem_Email= #mem_Email#
+	</select>
+
+	<select id="selectByMemEmail" parameterClass="str" resultClass="Member">
+		select * from member where mem_Email = #mem_Email#
+	</select>
+
+	<select id="selectJoinToday" resultClass="int">
+		SELECT count(*)
+		FROM MEMBER
+		WHERE (MEM_JOIN_DATE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE,'D') + 8)
+	</select>
+
+	<select id="selectJoinMemberToday" resultClass="Member">
+		SELECT * FROM MEMBER
+		WHERE (MEM_JOIN_DATE BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE,'D') + 8)
+	</select>
+
+	<select id="selectProjCreated_Count" resultClass="int">
+		SELECT count(*) FROM PROJECT
+		WHERE (PROJ_CREATED_DAY BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE,'D') + 8)
+	</select>
+
+	<select id="selectVisitorNum" resultClass="int">
+		select count(*)
+		from member_log
+	</select>
+
+	<select id="selectExit_count" resultClass="int">
+		select count(QUIT_CHECK)
+		from MEMBER
+		WHERE QUIT_CHECK = 'n'
+	</select>
+
+	<select id="selectExit_MemList" resultClass="Member">
+		select *
+		from MEMBER
+		WHERE QUIT_CHECK = 'n'
+	</select>
+
+	<select id="selectTodayVisitorCount" resultClass="int">
+		SELECT count(*) FROM member_log
+		WHERE (MEM_LOG_TIME BETWEEN TRUNC(SYSDATE) AND TRUNC(SYSDATE,'D') + 8)
+	</select>
+
+	<select id="selectVisitThisWeek" resultClass="int">
+		SELECT count(*) FROM MEMBER_LOG
+		WHERE (MEM_LOG_TIME BETWEEN TRUNC(SYSDATE,'D') -3 AND TRUNC(SYSDATE,'D')+4)
+	</select>
+
+	<select id="selectVisitLastWeek" resultClass="int">
+		SELECT count(*) FROM MEMBER_LOG
+		WHERE (MEM_LOG_TIME BETWEEN TRUNC(SYSDATE,'D') -10 AND
+		TRUNC(SYSDATE,'D')-4)
+	</select>
+	<select id="selectKing" parameterClass="int" resultClass="Member">
+		select * from member
+		where mem_Email =
+		(select mem_Email from (select mem_Email,count(mem_Email) as maxCount
+		from project_log
+		where proj_num = #proj_Num#
+		group by mem_Email
+		order by maxCount desc )
+		where rownum =1)
+	</select>
+</sqlMap>
+
+
+
+
+
+

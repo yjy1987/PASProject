@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ProjectBoard">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+
+	<select id="selectProjectBoardList" resultClass="ProjectBoard" parameterClass="int">
+		SELECT * FROM PROJECT_BOARD 
+		WHERE PROJ_NUM = #proj_Num#
+		ORDER BY PB_ARTICLE_NUM DESC
+
+	</select>
+
+	<select id="selectProjectBoard" parameterClass="int"
+		resultClass="ProjectBoard">
+		SELECT *
+		FROM PROJECT_BOARD
+		WHERE PB_ARTICLE_NUM = #pb_Article_Num#
+	</select>
+
+	<select id = "myProjectList" parameterClass="str" resultClass="ProjectBoard">
+		SELECT * FROM PROJECT_BOARD 
+		WHERE MEM_EMAIL = #mem_Email#
+		ORDER BY PB_ARTICLE_NUM DESC
+	</select>
+
+	<insert id="insertProjectBoard" parameterClass="ProjectBoard">
+		INSERT INTO
+		PROJECT_BOARD(PB_ARTICLE_NUM,PROJ_NUM,MEM_EMAIL,PB_CONTENT,MEM_NAME,MEM_IMG)
+		VALUES(PROJECT_BOARD_SEQ.NEXTVAL,#proj_Num#,#mem_Email#,#pb_Content#,#mem_Name#,#mem_Img#)
+	</insert>
+
+	<select id="updateFormProjectBoard" parameterClass="int" resultClass="ProjectBoard" >
+		SELECT * FROM PROJECT_BOARD 
+		WHERE PB_ARTICLE_NUM = #pb_Article_Num#
+	</select>
+
+
+	<update id="updateProjectBoard" parameterClass="ProjectBoard">
+		UPDATE
+		PROJECT_BOARD SET PB_CONTENT=#pb_Content#
+		WHERE
+		PB_ARTICLE_NUM=#pb_Article_Num#
+	</update>
+
+
+	<delete id="deleteProjectBoard" parameterClass="int">
+		DELETE FROM
+		PROJECT_BOARD WHERE PB_ARTICLE_NUM=#pb_Article_Num#
+	</delete>
+	
+	<select id="selectPBTotalCount" resultClass="int">
+		select count(*) from project_Board
+	</select>
+</sqlMap>

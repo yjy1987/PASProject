@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SpreadSheet">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+    <resultMap class="SpreadSheet" id="spreadSheetClob">
+   <result column="doc_Num" property="doc_Num" />
+   <result column="sp_Wt_Date" property="sp_Wt_Date" />
+   <result column="sp_Content" property="sp_Content" jdbcType="CLOB" javaType="java.lang.String"/>
+   </resultMap>
+   
+	 <update id="insertSpreadSheet" parameterClass="SpreadSheet">
+      INSERT INTO
+      SPREAD_SHEET(SP_CONTENT,DoC_NUM)
+      VALUES(#sp_Content#,#doc_Num#)
+   </update>
+
+	<select id="selectSpreadSheetByDocNum" parameterClass="int" resultMap="spreadSheetClob">
+		select * from spread_sheet where doc_num = #doc_Num#
+	</select>
+	
+	<update id="updateSpreadSheet" parameterClass="SpreadSheet">
+		update spread_Sheet set sp_content = #sp_Content# where doc_Num = #doc_Num#
+	</update>
+</sqlMap>

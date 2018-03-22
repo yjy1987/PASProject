@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="QnaBoardReply">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+
+
+	<select id="selectQnaReply" parameterClass="int"
+		resultClass="QnaBoardReply">
+		SELECT *
+		FROM QNA_BOARD_REPLY
+		WHERE QB_ARTICLE_NUM LIKE '%'||#qb_Article_Num#||'%'
+
+
+	</select>
+
+	<insert id="insertQnaBoardReply" parameterClass="QnaBoardReply">
+		INSERT INTO
+		QNA_BOARD_REPLY(QB_REPLY_NUM,QB_REPLY_CONTENT,ADMIN_EMAIL,QB_ARTICLE_NUM) 
+		VALUES(QNA_BOARD_REPLY_SEQ.NEXTVAL, #qb_Reply_Content#, #admin_Email#,#qb_Article_Num#)
+	</insert>
+
+
+	<update id="updateQnaBoardReply" parameterClass="QnaBoardReply">
+		UPDATE QNA_BOARD_REPLY SET QB_REPLY_CONTENT=#qb_Reply_Content#
+		WHERE QB_REPLY_NUM = #qb_Reply_Num#
+	</update>
+
+	<delete id="deleteQnaBoardReply" parameterClass="int">
+		DELETE FROM QNA_BOARD_REPLY WHERE QB_ARTICLE_NUM=#qb_Article_Num#
+	</delete>
+
+</sqlMap>

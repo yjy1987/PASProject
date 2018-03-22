@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FreeBoard">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+   <select id="frb_myPost" resultClass="FreeBoard" parameterClass="FreeBoard">
+   SELECT * FROM Free_Like_Count_View
+      WHERE
+      MEM_NAME LIKE '%'||#mem_Name#||'%' and
+      FRB_CONTENT LIKE '%'||#frb_Content#||'%' and
+      FRB_CONTENT || FRB_TITLE LIKE '%'||#frb_title_Content#||'%' and
+      FRB_TITLE LIKE '%'||#frb_Title#||'%' and
+      FRB_TAG LIKE '%'||#frb_Tag#||'%'
+      <isGreaterThan  prepend="and" property="frb_Article_Num" compareValue="0">
+      FRB_ARTICLE_NUM = #frb_Article_Num# 
+      </isGreaterThan>       
+      and MEM_EMAIL like '%'||#mem_Email#||'%'   
+      ORDER BY frb_Article_Num DESC
+   </select>
+   
+   <select id="frb_myPostCount" resultClass="int" parameterClass="FreeBoard">
+      SELECT COUNT(*)
+      FROM Free_Like_Count_View
+      WHERE
+      MEM_NAME LIKE '%'||#mem_Name#||'%' and
+      FRB_CONTENT LIKE '%'||#frb_Content#||'%' and
+      FRB_CONTENT || FRB_TITLE LIKE '%'||#frb_title_Content#||'%' and
+      FRB_TITLE LIKE '%'||#frb_Title#||'%' and
+      FRB_TAG LIKE '%'||#frb_Tag#||'%'
+      <isGreaterThan  prepend="and" property="frb_Article_Num" compareValue="0">
+      FRB_ARTICLE_NUM = #frb_Article_Num# 
+      </isGreaterThan>       
+      and MEM_EMAIL like '%'||#mem_Email#||'%'   
+      ORDER BY frb_Article_Num DESC
+   
+   </select>
+   
+
+   <select id="selectFreeBoardList" resultClass="FreeBoard" parameterClass="FreeBoard">
+      SELECT * FROM Free_Like_Count_View
+      WHERE
+      MEM_NAME LIKE '%'||#mem_Name#||'%' and
+      FRB_CONTENT LIKE '%'||#frb_Content#||'%' and
+      FRB_CONTENT || FRB_TITLE LIKE '%'||#frb_title_Content#||'%' and
+      FRB_TITLE LIKE '%'||#frb_Title#||'%' and
+      FRB_TAG LIKE '%'||#frb_Tag#||'%'
+      <isGreaterThan  prepend="and" property="frb_Article_Num" compareValue="0">
+      FRB_ARTICLE_NUM = #frb_Article_Num# 
+      </isGreaterThan>       
+      ORDER BY frb_Article_Num DESC
+   </select>
+   
+   <select id="freeBoardSearchCount" resultClass="int" parameterClass="FreeBoard">
+   SELECT COUNT(*)
+   FROM FREE_BOARD
+   WHERE 
+   MEM_NAME LIKE '%'||#mem_Name#||'%' and
+   FRB_CONTENT LIKE '%'||#frb_Content#||'%' and
+   FRB_CONTENT || FRB_TITLE LIKE '%'||#frb_title_Content#||'%' and
+   FRB_TITLE LIKE '%'||#frb_Title#||'%' and
+   FRB_TAG LIKE '%'||#frb_Tag#||'%'
+   <isGreaterThan  prepend="and" property="frb_Article_Num" compareValue="0">
+      FRB_ARTICLE_NUM = #frb_Article_Num# 
+   </isGreaterThan>
+   </select>
+   
+   
+   <insert id="insertFreeboardLike" parameterClass="FreeBoardLike">
+      INSERT INTO
+      FREE_BOARD_LIKE(FRB_ARTICLE_NUM,MEM_EMAIL) 
+      VALUES(#frb_Article_Num#,#mem_Email#)
+   </insert>
+   
+   <delete id="deleteFreeBoardLike" parameterClass="FreeBoardLike">
+      DELETE FROM FREE_BOARD_LIKE 
+      WHERE FRB_ARTICLE_NUM=#frb_Article_Num# and MEM_EMAIL=#mem_Email#
+   </delete>
+   
+   <select id="selectFreeBoardLike" resultClass="int">
+      select count(*) 
+      from FREE_BOARD_LIKE 
+      WHERE FRB_ARTICLE_NUM=#FRB_Article_Num#
+   </select>
+   
+   <select id="selectFreeBoardLikeList" parameterClass="FreeBoardLike"
+         resultClass="FreeBoardLike">
+      SELECT *
+      FROM FREE_BOARD_LIKE
+      WHERE FRB_ARTICLE_NUM = #frb_Article_Num# and MEM_EMAIL = #mem_Email#
+
+   </select>
+   
+
+   <select id="selectFreeBoard" parameterClass="int"
+      resultClass="FreeBoard">
+      SELECT *
+      FROM FREE_BOARD
+      WHERE FRB_ARTICLE_NUM LIKE '%'||#frb_Article_Num#||'%'
+   </select>
+
+   <select id="selectFreeBoardDetail" parameterClass="int" resultClass="FreeBoard">
+      select * from free_Board where frb_article_num = #frb_article_num#
+   </select>
+   
+   <insert id="insertFreeBoard" parameterClass="FreeBoard">
+      INSERT INTO
+      FREE_BOARD(FRB_ARTICLE_NUM,FRB_CONTENT,FRB_KIND,FRB_TITLE,MEM_EMAIL,MEM_NAME,FRB_TAG) 
+      VALUES(FREE_BOARD_SEQ.NEXTVAL,#frb_Content#,#frb_Kind#,#frb_Title#,#mem_Email#,#mem_Name#,#frb_Tag#)
+   </insert>
+
+
+   <update id="updateFreeBoard" parameterClass="FreeBoard">
+      UPDATE FREE_BOARD SET FRB_CONTENT=#frb_Content#, FRB_KIND=#frb_Kind#,FRB_TAG=#frb_Tag#,
+      FRB_TITLE=#frb_Title# WHERE FRB_ARTICLE_NUM=#frb_Article_Num#
+   </update>
+
+   <delete id="deleteFreeBoard" parameterClass="int">
+      DELETE FROM FREE_BOARD WHERE FRB_ARTICLE_NUM=#frb_Article_Num#
+   </delete>
+   
+   <update id="updateFreeBoardCount" parameterClass="FreeBoard">
+      UPDATE FREE_BOARD SET frb_Inq_Count = frb_Inq_Count+1
+      where frb_Article_Num = #frb_Article_Num#
+   </update>
+   
+   <update id="updateFreeBoardCountM" parameterClass="FreeBoard">
+      UPDATE FREE_BOARD SET frb_Inq_Count = frb_Inq_Count-1
+      where frb_Article_Num = #frb_Article_Num#
+   </update>
+   
+   <select id="selectTotalCount" resultClass="int">
+      select count(*) from free_Board
+   </select>
+   
+   <select id="selectFreeLikeCountViewList" resultClass="FreeBoard">
+      select * from Free_Like_Count_View
+   </select>
+
+</sqlMap>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing 
+		infrastructure -->
+		
+		
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
+		up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/upload/**" location="/resources/upload/" />
+	<resources mapping="/jquery/**" location="/resources/jquery/" />
+	<resources mapping="/admin/**" location="/resources/admin/"/>
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
+		in the /WEB-INF/views directory -->
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+		<beans:property name="order" value="1"/>
+		
+	</beans:bean>
+
+	<beans:bean class = "org.springframework.web.servlet.view.BeanNameViewResolver"/>
+	
+	<!-- MultipartResolver 설정 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- one of the properties available; the maximum file size in bytes -->
+        <beans:property name="maxUploadSize" value="1048576"/>
+        <beans:property name="defaultEncoding" value="utf-8" />
+	</beans:bean>
+	
+	<context:annotation-config/>
+	<context:component-scan base-package="com.app"  use-default-filters="false">
+    <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    </context:component-scan> 
+	<annotation-driven />
+	
+	
+	<beans:bean id="conHandler" class="com.app.pas.commons.socketjs.SockjsHandler"/>
+	<beans:bean id ="SockjsHandshakeHandler" class="com.app.pas.commons.socketjs.SockjsHandshakeHandler"/>
+	
+	<websocket:handlers allowed-origins="*" >
+		<websocket:mapping handler="conHandler" path="/conSocket.sockjs"/>
+		<websocket:handshake-handler ref="SockjsHandshakeHandler"/>
+		<websocket:handshake-interceptors >
+			<beans:bean id="interceptor" class="com.app.pas.commons.socketjs.SockjsHandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+		<websocket:sockjs/>
+	</websocket:handlers>
+	
+	
+	
+	
+	<beans:bean id="roomList" class="java.util.HashMap"/>
+	<beans:bean id="spreadSheetHandler" class="com.app.pas.commons.socketjs.SpreadSheetHandler" p:roomList-ref="roomList"/>
+	
+	<websocket:handlers allowed-origins="*" >
+	 <websocket:mapping handler="spreadSheetHandler" path="/spreadSheetSocket.sockjs" />
+	 <websocket:handshake-interceptors>
+	 	<beans:bean id="spreadSheetInterceptor"  class="com.app.pas.commons.socketjs.SpreadSheetHandshakeInterceptor" />
+	 </websocket:handshake-interceptors>
+	 <websocket:sockjs/>
+	</websocket:handlers>
+	
+</beans:beans>

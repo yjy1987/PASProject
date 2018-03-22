@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Position">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+   
+ <select id="selectPosition" parameterClass="int" resultClass="Position" >
+ 	select * from position where position_num = #position_Num#
+ </select>
+   
+   <update id="updatePosition" parameterClass="Position">
+      UPDATE POSITION SET POSITION_NAME=#position_Name# 
+	  WHERE POSITION_NUM=#position_Num#
+   </update>
+   
+</sqlMap>

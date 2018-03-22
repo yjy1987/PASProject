@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AccountBoard">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+
+	<select id="selectAccountBoardByProj" parameterClass="int" resultClass="AccountBoard">
+		SELECT *
+		FROM ACCOUNT_BOARD
+		WHERE PROJ_NUM = #proj_Num# ORDER BY ACC_NUM DESC
+
+	</select>
+
+	<select id="selectAccountBoardByAcc" parameterClass="AccountBoard"
+		resultClass="AccountBoard">
+		SELECT *
+		FROM ACCOUNT_BOARD
+		WHERE ACC_NUM = #acc_Num# AND PROJ_NUM = #proj_Num#
+
+
+	</select>
+	
+	<select id="selectAccountCount" parameterClass="int" resultClass="int">
+	SELECT COUNT(*) 
+	FROM ACCOUNT_BOARD 
+	WHERE PROJ_NUM = #proj_Num# 
+	
+	
+	</select>
+
+	<insert id="insertAccountBoard" parameterClass="AccountBoard">
+		INSERT INTO
+		ACCOUNT_BOARD(ACC_NUM,ACC_DATE,ACC_IMP,ACC_EXP,ACC_CONTENT,ACC_TOTAL,PROJ_NUM)
+		VALUES(ACCOUNT_BOARD_SEQ.NEXTVAL,#acc_Date#,#acc_Imp#,#acc_Exp#,#acc_Content#,#acc_Total#,#proj_Num#)
+	</insert>
+
+
+	<update id="updateAccountBoard" parameterClass="AccountBoard">
+		UPDATE ACCOUNT_BOARD SET ACC_DATE=#acc_Date#, ACC_IMP=#acc_Imp#,
+		ACC_EXP=#acc_Exp#,
+		ACC_CONTENT=#acc_Content#, ACC_TOTAL=#acc_Total# WHERE ACC_NUM=#acc_Num# AND PROJ_NUM=#proj_Num#
+	</update>
+
+	<delete id="deleteAccountBoard" parameterClass="AccountBoard">
+		DELETE FROM ACCOUNT_BOARD WHERE ACC_NUM=#acc_Num# and Proj_Num=#proj_Num#
+	</delete>
+	
+	<select id="sumAccountImp" parameterClass="int" resultClass="int">
+	  SELECT nvl(SUM(ACC_IMP),0) 
+	  FROM ACCOUNT_BOARD 
+	  WHERE PROJ_NUM = #proj_Num#
+	
+	</select>
+	
+	<select id="sumAccountExp" parameterClass="int" resultClass="int">
+	   SELECT nvl(SUM(ACC_EXP),0)
+	  FROM ACCOUNT_BOARD 
+	  WHERE PROJ_NUM = #proj_Num#
+	
+	</select>
+
+</sqlMap>

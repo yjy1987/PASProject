@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Invite">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+   
+   <select id="selectInvite" parameterClass="int" resultClass="Invite" >
+      select * from Invite where INVITE_NUM=#invite_Num#
+   </select>
+   
+   <update id="insertInvite" parameterClass="Invite">
+      insert into INVITE(INVITE_NUM,INVITE_CONTENT,PROJ_NUM,MEM_EMAIL) 
+	  VALUES(INVITE_SEQ.NEXTVAL,#invite_Content#,#proj_Num#,#mem_Email#)
+	  
+   </update>
+   
+   <update id="updateInvite" parameterClass="Invite">
+      update INVITE set INVITE_CONTENT=#invite_Content#
+      WHERE INVITE_NUM = #invite_Num#
+   </update>
+   
+   <update id="deleteInvite" parameterClass="Invite">
+      delete from INVITE where proj_Num=#proj_Num# and mem_Email=#mem_Email#
+   </update>
+   
+   <select id="selectInviteList" parameterClass="ProjInviteView" resultClass="ProjInviteView">
+   select * 
+   from proj_invite_view 
+   where proj_Num = #proj_Num# and invite_commit_check = '0'
+   </select>
+   
+   <select id="selectInviteListByMemEmail" parameterClass="str" resultClass="ProjInviteView">
+    select * 
+   	from proj_invite_view 
+   	where mem_Email=#mem_Email# and invite_Commit_check ='0' order by invite_num desc
+   </select>
+   
+   <update id="updateInviteCommitCheck" parameterClass="Invite">
+   		update invite set invite_commit_check = '1' where proj_num =#proj_Num# and mem_email = #mem_Email#
+   </update>
+   
+   <select id="selectInviteProjNumByMemEmail" parameterClass="str" resultClass="int">
+    select proj_Num
+   	from invite 
+   	where mem_Email=#mem_Email# and invite_Commit_check ='0' order by invite_num desc
+   </select>
+   
+   <select id="selectInviteCount" parameterClass="str" resultClass="int">
+   		select count(*) from proj_invite_view where mem_email = #mem_Email# and invite_Commit_check ='0'
+   </select>
+   
+   <select id="selectCountProjInviteView" parameterClass="Invite" resultClass="int">
+		select count(*) from proj_invite_View where invite_commit_check =0 and mem_Email = #mem_Email# and proj_num = #proj_Num#
+	</select>
+	
+</sqlMap>

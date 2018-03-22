@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="FreeBoardReply">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+
+
+   <select id="selectFreeBoardReply" parameterClass="int"
+      resultClass="FreeBoardReply">
+      SELECT *
+      FROM FREE_BOARD_REPLY
+      WHERE FRB_ARTICLE_NUM =#frb_Article_Num#
+   </select>
+   
+   <select id="selectFRBR" parameterClass="int"
+      resultClass="FreeBoardReply">
+      SELECT *
+      FROM FREE_BOARD_REPLY
+      WHERE frb_Reply_Num =#frb_Reply_Num#
+   </select>
+
+   <insert id="insertFreeBoardReply" parameterClass="FreeBoardReply">
+      INSERT INTO
+      FREE_BOARD_REPLY(FRB_REPLY_NUM,FRB_ARTICLE_NUM,FRB_REPLY_MEM,
+      FRB_REPLY_CONTENT,FRB_REPLY_MEM_NAME) 
+      VALUES(FREE_BOARD_REPLY_SEQ.NEXTVAL,#frb_Article_Num#,#frb_Reply_Mem#,#frb_Reply_Content#,#frb_Reply_Mem_Name#)
+   </insert>
+
+
+   <update id="updateFreeBoardReply" parameterClass="FreeBoardReply">
+      UPDATE FREE_BOARD_REPLY SET FRB_REPLY_CONTENT=#frb_Reply_Content# 
+      WHERE FRB_REPLY_NUM = #frb_Reply_Num#
+   </update>
+
+
+	<delete id="deleteFreeBoradReply" parameterClass="int">
+		DELETE FROM FREE_BOARD_REPLY WHERE FRB_REPLY_NUM=#frb_Reply_Num#
+	</delete>
+	
+	<select id="selectFRBReplyTotalCount" resultClass="int">
+      select count(*) from FREE_BOARD_REPLY
+   </select>
+
+</sqlMap>

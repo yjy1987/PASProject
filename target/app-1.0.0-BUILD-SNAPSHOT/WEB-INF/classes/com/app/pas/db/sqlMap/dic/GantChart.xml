@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="GantChart">
+<typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+   <select id="selectGantChart" resultClass="GantChart" parameterClass="int">
+   	select * from gant_chart where proj_Num = #proj_Num#
+   </select>
+   
+   <update id="deleteGantChart" parameterClass="int">
+   	   delete from gant_chart where proj_Num = #proj_Num#
+   </update>
+   <update id="insertGantChart" parameterClass="GantChart">
+   		 INSERT INTO GANT_CHART(GT_NUM,GT_TITLE,GT_COMPL_RATE,GT_START_DATE,GT_END_DATE,Proj_Num) 
+	  VALUES(GANT_CHART_SEQ.NEXTVAL,#gt_Title#,#gt_Compl_Rate#,#gt_Start_Date#,#gt_End_Date#,#proj_Num#)
+   </update>
+</sqlMap>

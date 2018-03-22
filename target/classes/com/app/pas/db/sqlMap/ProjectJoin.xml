@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="ProjectJoin">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+  
+   
+   
+   <select id="selectProjectJoinList" parameterClass="str" resultClass="ProjectJoin" >
+      select * from Project_Join where MEM_EMAIL LIKE '%'||#mem_Email#||'%'
+   </select>
+   
+   <select id = "selectProjectJoin" parameterClass="ProjectJoin" resultClass="ProjectJoin">
+   		select * from project_join where mem_email =#mem_Email# and proj_num = #proj_Num#
+   </select>
+   
+   <select id="selectJoinCountMember" resultClass="int">
+		select count(mem_Email) from project_join where proj_num=#proj_Num# and pjj_per_num = 1
+	</select>
+   
+   <update id="insertProjectJoin" parameterClass="ProjectJoin">
+      insert into Project_Join(MEM_EMAIL,PROJ_NUM,mem_name,mem_Img,pjj_Color) 
+	  VALUES(#mem_Email#,#proj_Num#,#mem_Name#,#mem_Img#,#pjj_Color#)
+   </update>
+   
+   <update id="updateProjectJoin" parameterClass="ProjectJoin">
+      UPDATE Project_Join SET position_num=#position_Num#, pjj_per_num = #pjj_Per_Num#
+	  WHERE MEM_EMAIL=#mem_Email# and proj_num = #proj_Num#
+   </update>
+   
+   <update id="deleteProjectJoin" parameterClass="ProjectJoin">
+      delete from Project_Join where MEM_EMAIL=#mem_Email# and proj_num = #proj_Num#
+   </update>
+   
+   <update id="updateProjectJoinColor" parameterClass="ProjectJoin"> 
+   	update project_join set pjj_Color = #pjj_Color# where MEM_EMAIL=#mem_Email# and proj_num = #proj_Num#
+   </update>
+   
+   <update id="updatePositionNum" parameterClass="ProjectJoin">
+    update project_join set position_Num = #position_Num# where MEM_EMAIL=#mem_Email# and proj_num = #proj_Num#
+   </update>
+</sqlMap>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="BoardManagement">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+   
+   <update id="insertBoardManagement" parameterClass="BoardManagement">
+      insert into board_management(bm_num,bm_title,bm_mem_email,bm_mem_name,BM_PROJ_NUM) 
+      values(board_management_SEQ.NEXTVAL,#bm_Title#,#bm_Mem_Email#,#bm_Mem_Name#,#bm_Proj_Num#)
+   </update>
+   
+   <select id="selectLastColumn" resultClass="BoardManagement" parameterClass="str">
+		SELECT * 
+		FROM (SELECT * FROM Board_Management ORDER BY bm_num DESC )
+		WHERE  ROWNUM =1 and bm_mem_email = #bm_Mem_Email#
+   </select>
+   <select id="selectBoardList" parameterClass="int" resultClass="BoardManagement">
+   		select * from board_management where bm_proj_num = #bm_proj_num# order by bm_num
+   </select>
+   <select id="selectBoardCount" parameterClass="int" resultClass="int">
+   	select count(*) from board_total where bm_Num=#bm_Num#
+   </select>
+   
+   <update id="deleteBoardManagement" parameterClass="int">
+   		delete from board_management where bm_num = #bm_Num#
+   </update>
+   <select id="selectBoardByBmNum" parameterClass="int" resultClass="BoardManagement">
+   		select * from board_Management where bm_Num = #bm_Num#
+   </select>
+</sqlMap>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="BoardJoin">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+   <update id="insertBoardJoin" parameterClass="BoardJoin">
+      insert into board_Join(bm_num,bj_Mem_Email,bj_Write,bj_Read,bj_mem_name) 
+      values(#bm_Num#,#bj_Mem_Email#,#bj_Write#,#bj_Read#,#bj_Mem_Name#)
+   </update>
+   
+   <select id="selectBoardJoinList" parameterClass="int" resultClass="BoardJoin">
+   	select * from board_join where bm_num = #bm_Num#
+   </select>
+
+
+   <update id="updateBoardJoin" parameterClass="BoardJoin">
+   		update board_Join
+   		set bj_Write = #bj_Write#, bj_Read = #bj_Read#
+   		where bm_Num = #bm_Num#
+   </update>
+	
+	<select id = "selectBoardJoinByEmailBmNum" parameterClass="BoardJoin" resultClass="BoardJoin">
+		select * from board_join where bm_num = #bm_Num# and bj_mem_email = #bj_Mem_Email#
+	</select>
+	
+	<select id = "selectBoardJoinNotInMemberList" parameterClass="BoardJoin" resultClass="Member">
+		select pj.mem_Email,pj.mem_name from project_join pj where proj_num = #bj_Proj_Num# and pjj_per_num =1 and mem_email
+		not in (select b.bj_mem_email from board_join b where bm_num = #bm_Num#)
+	</select>
+</sqlMap>
+

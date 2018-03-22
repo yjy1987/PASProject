@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="MemberLog">
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+	<update id="insertMemberLog" parameterClass="MemberLog">
+		INSERT INTO MEMBER_LOG(MEM_EMAIL,MEM_LOG_NUM)
+		values(#mem_Email#,MEMBER_LOG_SEQ.NEXTVAL)
+	</update>
+	
+	<select id="selectMemberLogListByEmail" parameterClass="str" resultClass="MemberLog">
+		SELECT * FROM MEMBER_LOG WHERE MEM_EMAIL = #mem_Email#
+	</select>
+	
+	
+	<!-- 해당 로그인 유저의 마지막 로그 검색 -->
+	<select id="selectLastMemberLogByEmail" parameterClass = "str" resultClass="MemberLog">
+		SELECT * 
+		FROM (SELECT * FROM MEMBER_LOG ORDER BY MEM_LOG_NUM DESC )
+		WHERE  ROWNUM =1 AND MEM_EMAIL = #mem_Email#	
+	</select>
+	
+	
+	
+	<select id="selectWeeklyLogCount" resultClass="MemberLogCommand">
+		select * from 
+		(select count(*) as mem_Log_Count , to_char(mem_log_time) as log_Date
+		from member_log
+		group by to_char(mem_log_time)
+		order by to_char(mem_log_time) desc) where rownum between 1 and 7
+		order by 2 asc
+	</select>
+	
+</sqlMap>

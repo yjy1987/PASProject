@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="Apply">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+   
+   <select id="selectApply" parameterClass="int" resultClass="Apply" >
+      select * from apply where apply_num=#apply_Num#
+   </select>
+   
+   <select id="selectApplyList" parameterClass="int" resultClass="Apply">
+      select * from apply where apply_num like '%'||#apply_Num#||'%'
+   </select>
+   
+   <update id="insertApply" parameterClass="Apply">
+      insert into apply(apply_num,mem_email,proj_num) values(APPLY_SEQ.NEXTVAL,#mem_Email#,#proj_Num#)
+   </update>
+   
+   
+   <update id="updateApply" parameterClass="Apply">
+      update apply set apply_commit_check =#apply_Commit_Check# where apply_num=#apply_Num#
+   </update>
+   
+   <update id="deleteApply" parameterClass="Apply">
+      delete from apply where proj_Num=#proj_Num# and mem_Email=#mem_Email#
+   </update>
+   
+   
+   <select id="selectApplyById" parameterClass="str" resultClass="int">
+     select proj_Num from Apply where mem_Email=#mem_Email# and Apply_Commit_Check='0'
+   </select>
+   
+</sqlMap>

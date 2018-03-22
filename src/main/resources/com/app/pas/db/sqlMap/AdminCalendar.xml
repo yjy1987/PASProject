@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="AdminCalendar">
+		<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+	<select id="selectAdminCalendar" resultClass="AdminCalendar">
+		select * from admin_calendar
+	</select>
+	
+	<update id="insertAdminCalendar" parameterClass="AdminCalendar">
+		insert into
+		admin_Calendar(ad_cal_num,ad_cal_title,ad_cal_end,ad_cal_start,AD_CAL_ALLDAY)
+		VALUES(admin_calendar_seq.nextval,#ad_Cal_Title#,#ad_Cal_End#,#ad_Cal_Start#,#ad_Cal_allDay#)
+	</update>
+</sqlMap>

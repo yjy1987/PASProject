@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="WordSheet">
+
+   <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+    <resultMap class="WordSheet" id="wordSheetClob">
+   <result column="doc_Num" property="doc_Num" />
+   <result column="wd_Wt_Date" property="wd_Wt_Date" />
+   <result column="wd_Content" property="wd_Content" jdbcType="CLOB" javaType="java.lang.String"/>
+   </resultMap>
+   
+	 <update id="insertWordSheet" parameterClass="WordSheet">
+      INSERT INTO
+      WORD_SHEET(WD_CONTENT,DoC_NUM)
+      VALUES(#wd_Content#,#doc_Num#)
+      </update>
+
+	<select id="selectWordSheetByDocNum" parameterClass="int" resultMap="wordSheetClob">
+		select * from word_sheet where doc_num = #doc_Num#
+	</select>
+	
+	<update id="updateWordSheet" parameterClass="WordSheet">
+		update word_Sheet set wd_content = #wd_Content# where doc_Num = #doc_Num#
+	</update>
+</sqlMap>

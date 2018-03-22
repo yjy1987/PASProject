@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+    <context:component-scan base-package="com.app"  use-default-filters="false">
+    <context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+    <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+    <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan> 
+    
+<!-- ////////////////////////////////////////// Dao  //////////////////////////////////////////////////////////// -->
+ 	<bean id="AdminDao" class="com.app.pas.dao.impl.AdminDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="ApplyDao" class="com.app.pas.dao.impl.ApplyDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="DeadLineDao" class="com.app.pas.dao.impl.DeadLineDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="InviteDao" class="com.app.pas.dao.impl.InviteDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="MemberDao" class="com.app.pas.dao.impl.MemberDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="PositionDao" class="com.app.pas.dao.impl.PositionDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="ProjectDao" class="com.app.pas.dao.impl.ProjectDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="ProjectJoinDao" class="com.app.pas.dao.impl.ProjectJoinDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="ScheduleCalendarDao" class="com.app.pas.dao.impl.ScheduleCalendarDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="MemberLogDao" class="com.app.pas.dao.impl.MemberLogDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="ProjectLogDao" class="com.app.pas.dao.impl.ProjectLogDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="MainDao" class="com.app.pas.dao.impl.MainDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="MessageDao" class="com.app.pas.dao.impl.MessageDaoImpl" p:client-ref="SqlMapClient" />
+	<bean id="WeeklyCheckDao" class="com.app.pas.dao.board.impl.WeeklyCheckDaoImpl" p:client-ref="SqlMapClient" />
+	<bean id="AdminCalendarDao" class="com.app.pas.dao.impl.AdminCalendarDaoImpl" p:client-ref="SqlMapClient" />
+	<bean id="BoardManagementDao" class="com.app.pas.dao.impl.BoardManagementDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="BoardJoinDao" class="com.app.pas.dao.impl.BoardJoinDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="BoardTotalDao" class="com.app.pas.dao.impl.BoardTotalDaoImpl" p:client-ref="SqlMapClient"/>
+	
+	<bean id="AccountBoardDao" class="com.app.pas.dao.board.impl.AccountBoardDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="FreeBoardDao" class="com.app.pas.dao.board.impl.FreeBoardDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="FreeBoardReplyDao" class="com.app.pas.dao.board.impl.FreeBoardReplyDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="NoticeDao" class="com.app.pas.dao.board.impl.NoticeDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="ProjectBoardDao" class="com.app.pas.dao.board.impl.ProjectBoardDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="ProjectBoardReplyDao" class="com.app.pas.dao.board.impl.ProjectBoardReplyDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="QnaBoardDao" class="com.app.pas.dao.board.impl.QnaBoardDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="QnaBoardReplyDao" class="com.app.pas.dao.board.impl.QnaBoardReplyDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="SkillSharingBoardDao" class="com.app.pas.dao.board.impl.SkillSharingBoardDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="SkillSharingBoardReplyDao" class="com.app.pas.dao.board.impl.SkillSharingBoardReplyDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id="TotalNoticeDao" class="com.app.pas.dao.board.impl.TotalNoticeDaoImpl" p:client-ref="SqlMapClient"/>
+	
+
+
+	
+	<bean id ="WordSheetDao" class="com.app.pas.dao.dic.impl.WordSheetDaoImpl" p:client-ref="SqlMapClient"/> 
+	<bean id = "SpreadSheetDao" class="com.app.pas.dao.dic.impl.SpreadSheetDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id = "DocumentDao" class="com.app.pas.dao.dic.impl.DocumentDaoImpl" p:client-ref="SqlMapClient"/>
+	<bean id = "GantChartDao" class="com.app.pas.dao.dic.impl.GantChartDaoImpl" p:client-ref="SqlMapClient"></bean>
+	<!-- ////////////////////////////////////////// service  //////////////////////////////////////////////////////////// -->
+	
+	<bean id="AdminService" class="com.app.pas.service.AdminService" p:adminDao-ref="AdminDao"/>
+	<bean id="ApplyService" class="com.app.pas.service.ApplyService" p:applyDao-ref="ApplyDao"/>
+	<bean id="DeadLineService" class="com.app.pas.service.DeadLineService" p:deadlineDao-ref="DeadLineDao"/>
+	<bean id="InviteService" class="com.app.pas.service.InviteService" p:inviteDao-ref="InviteDao" p:projectJoinDao-ref="ProjectJoinDao"/>
+	<bean id="MemberService" class="com.app.pas.service.MemberService" p:memberDao-ref="MemberDao" p:projectJoinDao-ref="ProjectJoinDao"/>
+	<bean id="PositionService" class="com.app.pas.service.PositionService" p:positionDao-ref="PositionDao"/>
+	<bean id="ProjectJoinService" class="com.app.pas.service.ProjectJoinService" p:projectjoinDao-ref="ProjectJoinDao"/>
+	<bean id="ProjectService" class="com.app.pas.service.ProjectService" p:projectDao-ref="ProjectDao" p:applyDao-ref="ApplyDao" p:projectJoinDao-ref="ProjectJoinDao" p:memberDao-ref="MemberDao"/>
+	<bean id="ScheduleCalendarService" class="com.app.pas.service.ScheduleCalendarService" p:scheduleCalendarDao-ref="ScheduleCalendarDao"/>
+	<bean id="MemberLogService" class="com.app.pas.service.MemberLogService" p:memberLogDao-ref="MemberLogDao"/>
+	<bean id="ProjectLogService" class="com.app.pas.service.ProjectLogService" p:projectLogDao-ref="ProjectLogDao"/>
+	<bean id="WeeklyCheckService" class="com.app.pas.service.WeeklyCheckService" p:weeklyCheckDao-ref="WeeklyCheckDao"/>
+	<bean id="AdminCalendarService" class="com.app.pas.service.AdminCalendarService" p:adminCalendarDao-ref="AdminCalendarDao"/>
+	
+	<bean id="MainService" class="com.app.pas.service.MainService" p:mainDao-ref="MainDao"/>
+	<bean id="AccountBoardService" class="com.app.pas.service.board.AccountBoardService" p:accountboardDao-ref="AccountBoardDao"/>
+	<bean id="FreeBoardService" class="com.app.pas.service.board.FreeBoardService" p:freeboardDao-ref="FreeBoardDao"/>
+	<bean id="FreeBoardReplyService" class="com.app.pas.service.board.FreeBoardReplyService" p:freeboardReplyDao-ref="FreeBoardReplyDao"/>
+	<bean id="NoticeService" class="com.app.pas.service.board.NoticeService" p:noticeDao-ref="NoticeDao"/>
+	<bean id="ProjectBoardService" class="com.app.pas.service.board.ProjectBoardService" p:projectboardDao-ref="ProjectBoardDao"/>
+	<bean id="ProjectBoardReplyService" class="com.app.pas.service.board.ProjectBoardReplyService" p:projectBoardReplyDao-ref="ProjectBoardReplyDao"/>
+	<bean id="QnaBoardService" class="com.app.pas.service.board.QnaBoardService" p:qnaBoardDao-ref="QnaBoardDao"/>
+	<bean id="QnaBoardReplyService" class="com.app.pas.service.board.QnaBoardReplyService" p:qnaBoardReply-ref="QnaBoardReplyDao" p:qnaBoardDao-ref="QnaBoardDao"/>
+	<bean id="SkillSharingBoardService" class="com.app.pas.service.board.SkillSharingBoardService" p:skillsharingboardDao-ref="SkillSharingBoardDao"/>
+	<bean id="SkillSharingBoardReplyService" class="com.app.pas.service.board.SkillSharingBoardReplyService" p:skillSharingBoardReplyDao-ref="SkillSharingBoardReplyDao"/>
+	<bean id="TotalNoticeService" class="com.app.pas.service.board.TotalNoticeService" p:totalnoticeDao-ref="TotalNoticeDao" />
+	<bean id="MessageService" class="com.app.pas.service.MessageService" p:messageDao-ref="MessageDao" />
+	<bean id="SpreadSheetService" class="com.app.pas.service.dic.SpreadSheetService" p:spreadSheetDao-ref="SpreadSheetDao"/>
+	<bean id="GantChartService" class="com.app.pas.service.dic.GantChartService" p:gantChartDao-ref="GantChartDao"/>
+	<bean id="DocumentService" class="com.app.pas.service.dic.DocumentService" p:documentDao-ref="DocumentDao" p:spreadSheetDao-ref="SpreadSheetDao" p:wordSheetDao-ref="WordSheetDao"/>
+    <bean id="WordSheetService" class="com.app.pas.service.dic.WordSheetService" p:wordSheetDao-ref="WordSheetDao"/>
+	<bean id="BoardManagementService" class="com.app.pas.service.BoardManagementService" p:boardManagementDao-ref="BoardManagementDao"/>
+	<bean id="BoardJoinService" class="com.app.pas.service.BoardJoinService" p:boardJoinDao-ref="BoardJoinDao"/>
+	<bean id="BoardTotalService" class="com.app.pas.service.BoardTotalService" p:boardTotalDao-ref="BoardTotalDao"/>
+</beans>

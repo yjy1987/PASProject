@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="ProjectLog">
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+	<update id="insertProjectLog" parameterClass="ProjectLog">
+		INSERT INTO PROJECT_LOG(MEM_EMAIL,PROJ_NUM,PROJ_LOG_NUM)
+		values(#mem_Email#,#proj_Num#,PROJECT_LOG_SEQ.NEXTVAL)
+	</update>
+	
+	<select id="selectProjectLogList" parameterClass="ProjectLog" resultClass="ProjectLog">
+		SELECT * FROM PROJECT_LOG WHERE MEM_EMAIL = #mem_Email# AND PROJ_NUM = #proj_Num#
+	</select>
+	
+	
+	<!-- 해당 로그인 유저의 프로젝트 별 마지막 로그 검색 -->
+	<select id="selectLastProjectLogList" parameterClass = "ProjectLog" resultClass="ProjectLog">
+		SELECT * 
+		FROM (SELECT * FROM PROJECT_LOG ORDER BY PROJ_LOG_NUM DESC )
+		WHERE  ROWNUM =1 AND MEM_EMAIL = #mem_Email# AND PROJ_NUM =#proj_Num#	
+	</select>
+	
+	<select id="selectWeekLogCount" resultClass="ProjLogCommand" parameterClass ="int">
+	select * from 
+	(select count(*) as project_Log_Count , to_char(proj_Log_Time) as log_Date
+		from project_log where proj_num = #proj_Num#
+		group by to_char(proj_Log_Time)
+		order by to_char(proj_Log_Time) desc) where rownum between 1 and 7
+		order by 2 asc
+	</select>
+	
+</sqlMap>

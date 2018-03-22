@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SkillSharingBoardReply">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+
+	<select id="selectSkillSharingBoardReplyList" resultClass="SkillSharingBoardReply">
+		SELECT *
+		FROM SKILL_SHARING_BOARD_REPLY
+		ORDER BY SSB_REPLY_NUM DESC
+
+	</select>
+
+	<select id="selectSkillSharingBoardReply" parameterClass="int"
+		resultClass="SkillSharingBoardReply">
+		SELECT *
+		FROM SKILL_SHARING_BOARD_REPLY
+		WHERE SSB_ARTICLE_NUM LIKE '%'||#ssb_Article_Num#||'%'
+
+
+	</select>
+	
+	<select id="selectSSBR" parameterClass="int"
+		resultClass="SkillSharingBoardReply">
+		SELECT *
+		FROM SKILL_SHARING_BOARD_REPLY
+		WHERE ssb_Reply_Num =#ssb_Reply_Num#
+	</select>
+
+	<insert id="insertSkillSharingBoardReply" parameterClass="SkillSharingBoardReply">
+		INSERT INTO
+	    SkILL_SHARING_BOARD_REPLY(SSB_REPLY_NUM,SSB_ARTICLE_NUM,SSB_REPLY_MEM,SSB_REPLY_CONTENT,SSB_REPLY_MEM_NAME) 
+	    VALUES(SKILL_SHARING_BOARD_REPLY_SEQ.NEXTVAL,#ssb_Article_Num#, #ssb_Reply_Mem# , #ssb_Reply_Content#,#ssb_Reply_Mem_Name#)
+	</insert>
+
+
+	<update id="updateSkillSharingBoardReply" parameterClass="SkillSharingBoardReply">
+		UPDATE SKILL_SHARING_BOARD_REPLY SET SSB_REPLY_CONTENT=#ssb_Reply_Content# 
+		WHERE SSB_REPLY_NUM = #ssb_Reply_Num# 
+	</update>
+
+	<delete id="deleteSkillSharingBoardReply" parameterClass="int">
+		DELETE FROM SKILL_SHARING_BOARD_REPLY WHERE SSB_REPLY_NUM=#ssb_Reply_Num#
+
+
+	</delete>
+
+	
+</sqlMap>

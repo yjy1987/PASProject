@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+	
+   <context:property-placeholder location="classpath:com/app/pas/db/properties/jdbc.properties"/> <!-- classpath는 resources 폴더의 주소를 말함 --> 
+   
+   <bean id = "dataSource"   class= "org.apache.commons.dbcp2.BasicDataSource"
+      p:driverClassName="${jdbc.driverClassName}" 
+      p:url="${jdbc.url}"
+      p:username="${jdbc.username}"
+      p:password="${jdbc.password}"
+      
+      /> <!-- jdbc.properties의 값 -->
+ 
+	   
+   <bean id="SqlMapClient" class="kr.or.ddit.commons.ibatis.CustomSqlMapClientFactoryBean"
+      p:configLocation="classpath:com/app/pas/db/sqlConfig/SqlMapConfig.xml"
+      p:dataSource-ref="dataSource"
+      p:typeAliasPackages="com.app.pas.**"
+      > <!-- iBatis 완성.... -->
+      <property name="mappingLocations">
+      <list>
+      	<value>classpath:com/app/pas/db/sqlMap/*.xml</value>
+      	<value>classpath:com/app/pas/db/sqlMap/board/*.xml</value>
+      	<value>classpath:com/app/pas/db/sqlMap/dic/*.xml</value>
+      	</list>
+      </property>
+      </bean>
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" p:dataSource-ref="dataSource"/>
+	
+	
+	<tx:advice id = "txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" propagation="REQUIRED"/>
+			<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="select*" propagation="REQUIRED"  read-only="true"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	  <aop:config>
+	      <aop:pointcut 
+	      expression="execution(public * com.app.pas.service..*Service.*(..))" 
+	      id="servicePublicMethod"/>
+	      <aop:advisor advice-ref="txAdvice" pointcut-ref="servicePublicMethod"/>
+ 	  </aop:config>
+ 	  
+</beans>

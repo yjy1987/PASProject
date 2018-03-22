@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ProjectBoardReply">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+
+	
+
+	<select id="selectProjectBoardReply" parameterClass="int"
+		resultClass="ProjectBoardReply">
+		SELECT *
+		FROM PROJECT_BOARD_REPLY
+		WHERE PB_ARTICLE_NUM = #pb_Article_Num# ORDER BY PB_REPLY_NUM ASC
+
+	</select>
+
+	<insert id="insertProjectBoardReply" parameterClass="ProjectBoardReply">
+		INSERT INTO
+		PROJECT_BOARD_REPLY(PB_REPLY_NUM,PB_REPLY_MEM,PB_REPLY_CONTENT,PB_ARTICLE_NUM,PB_REPLY_MEM_IMG,PB_REPLY_MEM_NAME) 
+		VALUES(PROJECT_BOARD_REPLY_SEQ.NEXTVAL, #pb_Reply_Mem#, #pb_Reply_Content#, #pb_Article_Num#,#pb_Reply_Mem_Img#,#pb_Reply_Mem_Name#)
+	</insert>
+
+
+	<update id="updateProjectBoardReply" parameterClass="ProjectBoardReply">
+		UPDATE PROJECT_BOARD_REPLY SET PB_REPLY_CONTENT =#pb_Reply_Content# 
+		WHERE PB_REPLY_NUM= #pb_Reply_Num#
+	</update>
+
+	<delete id="deleteProjectBoardReply" parameterClass="int">
+		DELETE FROM PROJECT_BOARD_REPLY WHERE PB_REPLY_NUM=#pb_Reply_Num#
+	</delete>
+
+</sqlMap>

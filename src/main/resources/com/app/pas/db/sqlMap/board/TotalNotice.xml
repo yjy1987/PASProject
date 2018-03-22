@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="TotalNotice">
+
+	<typeAlias alias="str" type="java.lang.String" />
+	<typeAlias alias="int" type="java.lang.Integer" />
+	
+
+	<select id="selectTotalNoticeList" resultClass="TotalNotice" parameterClass="TotalNotice">
+		SELECT * FROM TOTAL_NOTICE
+		WHERE 
+		TTNOTICE_TITLE LIKE '%'||#ttnotice_Title#||'%' and
+		TTNOTICE_CONTENT LIKE '%'||#ttnotice_Content#||'%' and
+		<isGreaterThan  prepend="and" property="ttnotice_Num" compareValue="0">
+		TTNOTICE_NUM = #ttnotice_Num# 
+		</isGreaterThan>		 
+		TTNOTICE_CONTENT || TTNOTICE_TITLE LIKE '%'||#ttnotice_Title_Content#||'%'
+		ORDER BY TTNOTICE_NUM DESC
+	</select>
+	
+	<select id ="toTalNoticeSearchCount" resultClass="int" parameterClass="TotalNotice">
+		SELECT COUNT(*)
+		FROM TOTAL_NOTICE
+		WHERE
+		TTNOTICE_TITLE LIKE '%'||#ttnotice_Title#||'%' and
+		TTNOTICE_CONTENT LIKE '%'||#ttnotice_Content#||'%' and
+		<isGreaterThan  prepend="and" property="ttnotice_Num" compareValue="0">
+		TTNOTICE_NUM = #ttnotice_Num# 
+		</isGreaterThan>
+		TTNOTICE_CONTENT || TTNOTICE_TITLE LIKE '%'||#ttnotice_Title_Content#||'%'
+	</select>
+	
+
+
+
+	<select id="toTalNoticeTotalCount" resultClass="int">
+		SELECT COUNT(*)
+		FROM TOTAL_NOTICE
+	</select>
+	
+	<select id="selectTotalNoticeBoard" parameterClass="int"
+		resultClass="TotalNotice">
+		SELECT *
+		FROM TOTAL_NOTICE
+		WHERE TTNOTICE_NUM LIKE '%'||#ttnotice_Num#||'%'
+	</select>
+
+	<insert id="insertTotalNotice" parameterClass="TotalNotice">
+		INSERT INTO
+		TOTAL_NOTICE(TTNOTICE_NUM,TTNOTICE_TITLE,TTNOTICE_CONTENT,ADMIN_EMAIL) 
+		VALUES(TOTAL_NOTICE_SEQ.NEXTVAL,#ttnotice_Title#,#ttnotice_Content#,#admin_Email#)
+	</insert>
+
+
+	<update id="updateTotalNotice" parameterClass="TotalNotice">
+		UPDATE TOTAL_NOTICE SET TTNOTICE_TITLE=#ttnotice_Title#, TTNOTICE_CONTENT=#ttnotice_Content# 
+		WHERE TTNOTICE_NUM=#ttnotice_Num#
+	</update>
+
+	<delete id="deleteTotalNotice" parameterClass="int">
+		DELETE FROM TOTAL_NOTICE WHERE TTNOTICE_NUM=#ttnotice_Num#
+	</delete>
+	
+	
+	<update id="totalNoticeCount" parameterClass="int">
+		UPDATE TOTAL_NOTICE SET TTNOTICE_INQ_COUNT = TTNOTICE_INQ_COUNT+1
+		WHERE TTNOTICE_NUM = #ttnotice_Num#
+	</update>
+
+</sqlMap>

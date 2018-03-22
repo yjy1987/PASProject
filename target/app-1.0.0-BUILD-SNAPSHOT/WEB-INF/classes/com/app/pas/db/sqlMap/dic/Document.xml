@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Document">
+ <typeAlias alias="str" type="java.lang.String" />
+   <typeAlias alias="int" type="java.lang.Integer" />
+   
+   <update id="insertDocument" parameterClass="Document">
+      insert into document(DOC_NUM,DOC_KIND,MEM_EMAIL,MEM_NAME,DOC_NAME,PROJ_NUM,DOC_IMG,doc_File_Name) 
+	  VALUES(DOCUMENT_SEQ.NEXTVAL,#doc_Kind#,#mem_Email#,#mem_Name#,#doc_Name#,#proj_Num#,#doc_Img#,#doc_File_Name#)
+   </update>
+   
+   <select id="selectDocumentLastColumn" resultClass="Document">
+   		select * from (select * from document order by  doc_num desc) where rownum=1
+   </select>
+   
+   <select id="selectDocumentListByProjNum" parameterClass="int" resultClass="Document" >
+   		select * from document where proj_Num = #proj_Num#  order by doc_wt_date desc
+   </select> 
+   <update id="deleteDocumentByDocNum" parameterClass="int">
+   		delete from document where doc_Num = #doc_Num#
+   </update>
+   
+   <select id = "selectDocumentByDocNum" parameterClass="int" resultClass="Document" >
+   		select * from document where doc_Num = #doc_Num#
+   </select>
+   
+   <select id = "selectCountDocumentByProjectNum" parameterClass="int" resultClass="int">
+   		select count(*) from document where proj_num = #proj_num#
+   </select>
+   
+   <update id="updateDocumentName" parameterClass="Document">
+   		update document set doc_File_Name = #doc_File_Name# where doc_Num = #doc_Num# 
+   </update>
+</sqlMap>

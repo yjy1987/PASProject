@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" 
+"http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+
+<sqlMap namespace="BoatdTotal">
+	<select id="selectBoardTotalList" parameterClass="int" resultClass="BoardTotal">
+		select * from Board_Total where bm_Num = #bm_Num#
+	</select>
+	
+	<update id = "insertBoardTotal" parameterClass="BoardTotal">
+		insert into board_total(bt_num,bt_content,bt_title,bt_mem_email,bm_num,bt_mem_name)
+		values(board_total_seq.nextval,#bt_Content#,#bt_Title#,#bt_Mem_Email#,#bm_Num#,#bt_Mem_Name#)
+	</update>
+	
+	<select id="selectBoardTotalByBtNum" resultClass="BoardTotal" parameterClass="int">
+		select * from board_total where bt_Num = #bt_Num#
+	</select>
+	
+	<update id="updateBoardTotal" parameterClass="BoardTotal">
+		update board_total
+		set bt_content = #bt_Content#, bt_title =#bt_Title#
+		where bt_Num = #bt_Num#
+	</update>
+	
+	<update id="deleteBoardTotal" parameterClass="int">
+		delete
+		from board_total
+		where bt_Num = #bt_Num#
+	</update>
+	
+	<select id="totalCountBoardTotalList" parameterClass="int" resultClass="int">
+		select count(*) from board_total where bm_num = #bm_Num#
+	</select>
+</sqlMap>
